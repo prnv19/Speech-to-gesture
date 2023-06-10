@@ -17,3 +17,4 @@ ipykernel
 tqdm
 huggingface_hub
 ipywidgets
+setuptools==41.0.0
