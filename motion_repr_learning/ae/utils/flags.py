@@ -66,10 +66,10 @@ flags.DEFINE_integer('layer3_width', 312, 'Number of units in each hidden layer 
 flags.DEFINE_integer('seed', 123456, 'Random seed')
 
 flags.DEFINE_string('summary_dir', home_out('summaries_exp'),
-                    '/home/ubuntu/Speech_driven_gesture_generation_with_autoencoder/summaries_exp')
+                    '/home/ubuntu/Speech-to-gesture/summaries_exp')
 
 flags.DEFINE_string('chkpt_dir', home_out('chkpts_exp'),
-                    '/home/ubuntu/Speech_driven_gesture_generation_with_autoencoder/chkpts_exp')
+                    '/home/ubuntu/Speech-to-gesture/chkpts_exp')
 
 flags.DEFINE_string('results_file', home_out('results.txt'),
-                    '/home/ubuntu/Speech_driven_gesture_generation_with_autoencoder/results.txt')
+                    '/home/ubuntu/Speech-to-gesture/results.txt')

@@ -62,7 +62,7 @@ def learning(data, data_info, just_restore=False):
 
     with tf.Graph().as_default():
 
-        tf.set_random_seed(fl.FLAGS.seed)
+        tf.compat.v1.set_random_seed(fl.FLAGS.seed)
 
         start_time = time.time()
 
@@ -82,12 +82,12 @@ def learning(data, data_info, just_restore=False):
             exit(1)
 
         # Allow TensorFlow to change device allocation when needed
-        config = tf.ConfigProto(allow_soft_placement=True)  # log_device_placement=True)
+        config = tf.compat.v1.ConfigProto(allow_soft_placement=True)  # log_device_placement=True)
         # Adjust configuration so that multiple executions are possible
         config.gpu_options.allow_growth = True
 
         # Start a session
-        sess = tf.Session(config=config)
+        sess = tf.compat.v1.Session(config=config)
 
         if debug:
             sess = tf_debug.TensorBoardDebugWrapperSession(sess, "taras-All-Series:6064")
@@ -99,32 +99,32 @@ def learning(data, data_info, just_restore=False):
         print('\nDAE with the following shape was created : ', shape)
 
         # Initialize input_producer
-        sess.run(tf.local_variables_initializer())
+        sess.run(tf.compat.v1.local_variables_initializer())
 
         max_val = nn.max_val
 
-        with tf.variable_scope("Train"):
+        with tf.compat.v1.variable_scope("Train"):
 
             ##############        DEFINE  Optimizer and training OPERATOR      ############
 
             # Define the optimizer
-            optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate)
+            optimizer = tf.compat.v1.train.AdamOptimizer(learning_rate=learning_rate)
 
             # Do gradient clipping
-            tvars = tf.trainable_variables()
+            tvars = tf.compat.v1.trainable_variables()
             grads, _ = tf.clip_by_global_norm(tf.gradients(nn._loss, tvars), 1e12)
             train_op = optimizer.apply_gradients(zip(grads, tvars),
-                                                 global_step=tf.train.get_or_create_global_step())
+                                                 global_step=tf.compat.v1.train.get_or_create_global_step())
 
             # Prepare for making a summary for TensorBoard
             train_error = tf.placeholder(dtype=tf.float32, shape=(), name='train_error')
             eval_error = tf.placeholder(dtype=tf.float32, shape=(), name='eval_error')
 
-            train_summary_op = tf.summary.scalar('Train_error', train_error)
-            eval_summary_op = tf.summary.scalar('Validation_error', eval_error)
+            train_summary_op = tf.compat.v1.summary.scalar('Train_error', train_error)
+            eval_summary_op = tf.compat.v1.summary.scalar('Validation_error', eval_error)
 
             summary_dir = fl.FLAGS.summary_dir
-            summary_writer = tf.summary.FileWriter(summary_dir, graph=tf.get_default_graph())
+            summary_writer = tf.compat.v1.summary.FileWriter(summary_dir, graph=tf.compat.v1.get_default_graph())
 
             num_batches = int(data.train.num_sequences / batch_size)
 
@@ -158,10 +158,10 @@ def learning(data, data_info, just_restore=False):
 
             else:
                 print("Initializing variables ...\n")
-                sess.run(tf.global_variables_initializer())
+                sess.run(tf.compat.v1.global_variables_initializer())
 
             # Create a saver
-            saver = tf.train.Saver(write_version=tf.train.SaverDef.V2)
+            saver = tf.compat.v1.train.Saver(write_version=tf.compat.v1.train.SaverDef.V2)
             chkpt_file = fl.FLAGS.chkpt_dir + '/chkpt-final'
 
             # restore model, if needed
