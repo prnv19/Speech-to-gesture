@@ -5,7 +5,7 @@ for calculation of speech features, aligning sequences and generating bvh files
 """
 
 import ctypes
-
+import tensorflow_hub as hub
 import librosa
 import librosa.display
 import matplotlib.pyplot as plt
@@ -21,6 +21,10 @@ from alt_prosody import compute_prosody
 
 MFCC_INPUTS=26 # How many features we will store for each MFCC vector
 WINDOW_LENGTH = 0.1
+
+FLAG_VGG = True
+if FLAG_VGG:
+    model = hub.load('https://tfhub.dev/google/vggish/1')
 
 
 def create_bvh(filename, prediction, frame_time):
@@ -289,3 +293,9 @@ def calculate_spectrogram(audio_filename):
     log_spectr = np.log(abs(spectr)+eps)
 
     return np.transpose(log_spectr)
+
+def calculate_vggish(audio_file_path):
+    waveform, sr = librosa.load(audio_file_path)
+    waveform = np.array(waveform, dtype=np.float32)
+    embeddings = model(waveform)
+    return embeddings.numpy()  # Convert tensor to numpy array

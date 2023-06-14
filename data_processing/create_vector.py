@@ -15,7 +15,10 @@ from tools import *
 
 N_OUTPUT = 384 # Number of gesture features (position)
 WINDOW_LENGTH = 50 # in miliseconds
-FEATURES = "MFCC"
+FEATURES = "VGGish"
+
+if FEATURES == "VGGish":
+    N_VGGISH = 128
 
 if FEATURES == "MFCC":
     N_INPUT = 26 # Number of MFCC features
@@ -43,6 +46,12 @@ def pad_sequence(input_vectors):
     Returns:
         new_input_vectors:  padded feature vectors
     """
+
+    if FEATURES == "VGGish":
+        N_INPUT = N_VGGISH
+        silence_vggish = calculate_vggish("data_processing/silence.wav")
+        vggish_empty_vector = silence_vggish[0]
+        empty_vectors = np.array([vggish_empty_vector] * int(N_CONTEXT / 2))
 
     if FEATURES == "MFCC":
 
@@ -137,7 +146,8 @@ def create_vectors(audio_filename, gesture_filename, nodes):
     """
     # Step 1: Vactorizing speech, with features of N_INPUT dimension, time steps of 0.01s
     # and window length with 0.025s => results in an array of 100 x N_INPUT
-
+    if FEATURES == "VGGish":
+        input_vectors = calculate_vggish(audio_filename)
     if FEATURES == "MFCC":
 
         input_vectors = calculate_mfcc(audio_filename)
