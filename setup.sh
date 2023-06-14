@@ -15,10 +15,10 @@ source ~/.bashrc
 conda init
 source ~/.bashrc
 
-conda create --name stg-nv python=3.6 -y
-conda activate stg-nv
-pip install --user nvidia-pyindex
-export PATH=$PATH:$HOME/.local/bin
-conda install -c conda-forge openmpi -y
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/anaconda3/envs/stg-nv/lib/
-pip install --user nvidia-tensorflow[horovod]
+# conda create --name stg-nv python=3.6 -y
+# conda activate stg-nv
+# pip install --user nvidia-pyindex
+# export PATH=$PATH:$HOME/.local/bin
+# conda install -c conda-forge openmpi -y
+# export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/anaconda3/envs/stg-nv/lib/
+# pip install --user nvidia-tensorflow[horovod]
