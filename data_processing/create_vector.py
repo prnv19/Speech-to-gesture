@@ -15,7 +15,7 @@ from tools import *
 
 N_OUTPUT = 384 # Number of gesture features (position)
 WINDOW_LENGTH = 50 # in miliseconds
-FEATURES = "VGGish"
+FEATURES = "MFCC"
 
 if FEATURES == "VGGish":
     N_VGGISH = 128
